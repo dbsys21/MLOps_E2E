@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: MLOps Github Actions
 
 # Controls when the workflow will run
 on:
@@ -33,13 +33,17 @@ jobs:
         python-version: [3.8]
 
     env:
-      DATABRICKS_HOST_STG: ${{ secrets.DATABRICKS_HOST_STG }}
-      DATABRICKS_TOKEN_STG: ${{ secrets.DATABRICKS_TOKEN_STG }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STG }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_STG }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      # expose teh slug/short values github variables inside the workflow
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -70,6 +74,9 @@ jobs:
 
       - name: Deploy the code and launch integration tests
         run: |
-          databricks repos update --path=/Repos/Staging/databricks-repos-ci-demo --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
-          dbx deploy --files-only --no-rebuild --deployment-file=conf/staging.json --no-package
-          dbx launch --job=nutter-testing-suite --as-run-submit --trace
+          databricks -v
+          export DATABRICKS_HOST = ${{ secrets.DATABRICKS_HOST_STG }}
+          export DATABRICKS_TOKEN = ${{ secrets.DATABRICKS_TOKEN_STG }}
+          databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+      #dbx deploy --files-only --no-rebuild --deployment-file=conf/staging.json --no-package
+      #dbx launch --job=nutter-testing-suite --as-run-submit --trace
