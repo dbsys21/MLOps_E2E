@@ -71,10 +71,9 @@ jobs:
           
       - name: Install dependencies
         env:
-          repo_url: 'https:////github.com//${{ env.GITHUB_REPOSITORY_OWNER_PART}}//${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: |
           pip install -r requirements.txt
-          env
           echo $repo_url
 
       - name: Check Repo already exists
@@ -84,7 +83,7 @@ jobs:
 
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure'
-        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --url ${{ env.repo_url }}
+        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --url=${{ env.repo_url }}
 
       - name: Update Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
