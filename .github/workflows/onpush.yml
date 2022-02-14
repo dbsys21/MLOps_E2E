@@ -75,8 +75,8 @@ jobs:
       - name: Deploy the code and launch integration tests
         run: |
           databricks -v
-          export DATABRICKS_HOST = ${{ secrets.DATABRICKS_HOST_STG }}
-          export DATABRICKS_TOKEN = ${{ secrets.DATABRICKS_TOKEN_STG }}
+          export DATABRICKS_HOST = ${{ env.DATABRICKS_HOST }}
+          export DATABRICKS_TOKEN = ${{ env.DATABRICKS_TOKEN }}
           databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
       #dbx deploy --files-only --no-rebuild --deployment-file=conf/staging.json --no-package
       #dbx launch --job=nutter-testing-suite --as-run-submit --trace
