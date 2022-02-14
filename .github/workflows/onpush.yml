@@ -79,10 +79,10 @@ jobs:
 
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure'
-        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
 
       - name: Update Repos
-        run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+        run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
 
       # - name: Deploy the code and launch integration tests
       #   run: |
