@@ -72,17 +72,26 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Deploy the code and launch integration tests
-        run: |
-          databricks -v
-          env
-          databricks workspace ls
-          databricks repos get --path /Repos/DevOps_Staging/databricks-nutter-projects-demo1
-          getRepoResult=$?
-          echo $getRepoResult
-      # if $Status = 0 
-      # databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
-      # if $Status = 0
+      - name: Check Repo already exists
+        id: check-repo
+        run: databricks repos get --path /Repos/MLOps_Staging/MLOps_notebooks
+        continue-on-error: true
+
+      - name: Create Repos
+        if: steps.check-repo.outcome == 'failure'
+        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+
+      - name: Update Repos
+        run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+
+      # - name: Deploy the code and launch integration tests
+      #   run: |
+      #     databricks -v
+      #     env
+      #     databricks workspace ls
+      #     databricks repos get --path /Repos/DevOps_Staging/databricks-nutter-projects-demo1 | grep 
+      #     getRepoResult=$?
+      #     echo $getRepoResult
 
       # export DATABRICKS_HOST = "https://adb-984752964297111.11.azuredatabricks.net"
       # export DATABRICKS_TOKEN = ${{ env.DATABRICKS_TOKEN }}
