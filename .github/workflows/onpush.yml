@@ -35,7 +35,6 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STG }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_STG }}
-      repo_url1: 'https://github.com/${{ GITHUB_REPOSITORY_OWNER_PART}}/${{ GITHUB_REPOSITORY_NAME_PART}}.git'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -70,11 +69,14 @@ jobs:
           python -m pip install --upgrade pip
           
       - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Get repo url
+        id: get-repo-url
         env:
-          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
-        run: |
-          pip install -r requirements.txt
-          echo 'env.repo_url is ${{env.repo_url}}'
+          repo_url1: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+        run: 
+          echo 'env.repo_url1 is ${{env.repo_url1}}'
           echo $repo_url1
 
       - name: Check Repo already exists
@@ -84,7 +86,11 @@ jobs:
 
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure'
-        run: databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
+        env:
+          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+        run: |
+          echo 'env.repo_url is ${{env.repo_url}}'
+          databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
 
       - name: Update Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
