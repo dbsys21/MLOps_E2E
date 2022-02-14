@@ -77,7 +77,13 @@ jobs:
           databricks -v
           env
           databricks workspace ls
-          databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+          databricks repos get --path /Repos/DevOps_Staging/databricks-nutter-projects-demo
+          status = $?
+          echo $status
+      # if $Status = 0 
+      # databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
+      # if $Status = 0
+
       # export DATABRICKS_HOST = "https://adb-984752964297111.11.azuredatabricks.net"
       # export DATABRICKS_TOKEN = ${{ env.DATABRICKS_TOKEN }}
           
