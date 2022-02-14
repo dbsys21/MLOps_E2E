@@ -83,7 +83,7 @@ jobs:
 
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure'
-        run: databricks repos create --path=/Repos/MLOps_Staging/MLOps_notebooks --url=${{ env.repo_url }}
+        run: databricks repos create --url=${{ env.repo_url }} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
 
       - name: Update Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
