@@ -35,7 +35,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STG }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_STG }}
-      repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+      repo_url1: 'https://github.com/${{ GITHUB_REPOSITORY_OWNER_PART}}/${{ GITHUB_REPOSITORY_NAME_PART}}.git'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -74,7 +74,7 @@ jobs:
           repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: |
           pip install -r requirements.txt
-          echo ${{env.repo_url}}
+          echo 'env.repo_url is ${{env.repo_url}}'
           echo $repo_url1
 
       - name: Check Repo already exists
