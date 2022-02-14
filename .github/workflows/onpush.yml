@@ -78,7 +78,7 @@ jobs:
           env
           databricks workspace ls
           databricks repos get --path /Repos/DevOps_Staging/databricks-nutter-projects-demo
-          status = $?
+          status=$?
           echo $status
       # if $Status = 0 
       # databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
