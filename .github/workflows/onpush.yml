@@ -76,6 +76,7 @@ jobs:
         run: |
           databricks -v
           env
+          databricks workspace ls
           databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_HEAD_REF_SLUG }}
       # export DATABRICKS_HOST = "https://adb-984752964297111.11.azuredatabricks.net"
       # export DATABRICKS_TOKEN = ${{ env.DATABRICKS_TOKEN }}
