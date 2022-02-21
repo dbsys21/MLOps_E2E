@@ -41,9 +41,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # # expose teh slug/short values github variables inside the workflow
-      # - name: Inject slug/short variables
-      #   uses: rlespinasse/github-slug-action@v3.x
+      # expose teh slug/short values github variables inside the workflow
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -86,8 +86,8 @@ jobs:
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
         env:
-          #repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
-          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
+          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+          #repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           echo 'env.repo_url is ${{env.repo_url}}'
           databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
