@@ -74,10 +74,9 @@ jobs:
       - name: Display env variabls
         id: get-env-var
         env:
-          repo_url1: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+          repo_url1: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           env
-          github
 
       - name: Check Repo already exists
         id: check-repo
@@ -87,7 +86,8 @@ jobs:
       - name: Create Repos
         if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
         env:
-          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+          #repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           echo 'env.repo_url is ${{env.repo_url}}'
           databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
