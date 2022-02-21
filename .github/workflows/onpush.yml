@@ -41,14 +41,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # expose teh slug/short values github variables inside the workflow
+      # expose the slug/short values github variables inside the workflow
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
+      
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -73,31 +69,28 @@ jobs:
 
       - name: Display env variabls
         id: get-env-var
-        env:
-          repo_url1: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           env
 
-      - name: Check Repo already exists
+      - name: Check if staging Repo already exists
         id: check-repo
         run: databricks repos get --path /Repos/MLOps_Staging/MLOps_E2E
         continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
-      - name: Create Repos
+      - name: Create staging Repos
         if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
         env:
           repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
-          #repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           echo 'env.repo_url is ${{env.repo_url}}'
           databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_E2E 
 
-      - name: Update Repos
+      - name: Update staging Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_E2E --branch=${{ env.GITHUB_REF_SLUG }}
 
       # run test in staging env
       - uses: ./.github/databricks-actions/run-notebook
-        id: run-test
+        id: run-integration-test
         with: 
           notebook-path: "/Repos/MLOps_Staging/MLOps_E2E/MLOps_notebooks/05_ops_validation"
           host: ${{ env.DATABRICKS_HOST }}
@@ -105,22 +98,23 @@ jobs:
           num-workers: 3
           runtime-version: "10.3.x-cpu-ml-scala2.12"
           node-type: "Standard_L4s"
+  
+     # the following steps deploy the repo to prodution
+      - name: Check if production Repo already exists
+        id: check-repo
+        run: databricks repos get --path /Repos/MLOps_Production/MLOps_E2E
+        continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
-      # # run test in staging env
-      # - name: Run test # call notebook action run
-      #   run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
+      - name: Create production Repos
+        if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
+        env:
+          repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
+        run: |
+          echo 'env.repo_url is ${{env.repo_url}}'
+          databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Production/MLOps_E2E 
 
-      # - name: Deploy the code and launch integration tests
-      #   run: |
-      #     databricks -v
-      #     env
-      #     databricks workspace ls
-      #     databricks repos get --path /Repos/DevOps_Staging/databricks-nutter-projects-demo1 | grep 
-      #     getRepoResult=$?
-      #     echo $getRepoResult
-
-      # export DATABRICKS_HOST = "https://adb-984752964297111.11.azuredatabricks.net"
-      # export DATABRICKS_TOKEN = ${{ env.DATABRICKS_TOKEN }}
-          
+      - name: Update production Repos
+        run: databricks repos update --path=/Repos/MLOps_Production/MLOps_E2E --branch=${{ env.GITHUB_REF_SLUG }}
+     
       #dbx deploy --files-only --no-rebuild --deployment-file=conf/staging.json --no-package
       #dbx launch --job=nutter-testing-suite --as-run-submit --trace
