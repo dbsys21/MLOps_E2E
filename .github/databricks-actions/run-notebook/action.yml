@@ -1,0 +1,41 @@
+name: databricks-run-notebook
+description: Submit a one-time job run of the notebook and wait for the result.
+
+inputs:
+  host:
+    description: Databricks host
+    required: true
+  token:
+    description: Databricks API token
+    required: true
+  notebook-path:
+    description: Target repo path on Databricks
+    required: true
+  runtime-version:
+    description: Runtime version 
+    required: true
+  node-type:
+    description: driver/worker node type
+    required: true
+  num-workers:
+    description: number of workers
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - run: |
+        python -m pip install --upgrade pip wheel
+        python -m pip install -r "${GITHUB_ACTION_PATH}/requirements.txt"
+      shell: bash
+    - run: |
+        python "${GITHUB_ACTION_PATH}/run_notebook.py" \
+          --host ${{ inputs.host }} --token ${{ inputs.token }} \
+          --notebook-path ${{ inputs.notebook-path }} \
+          --runtime-version ${{ inputs.runtime-version }} \
+          --node-type ${{ inputs.node-type }} --num-workers ${{ inputs.num-workers }}
+      shell: bash

@@ -7,14 +7,14 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-    tags-ignore:
+    tags-ignore: # if we only adding tags, we don't need to run tests
       - '*.*'
     paths-ignore:
       - 'README.md' # if we change documentation only, we don't need to run tests
   pull_request:
     branches: [ main ]
     tags-ignore:
-      - '*.*'
+      - '*.*' # if we only adding tags, we don't need to run tests
     paths-ignore:
       - 'README.md' # if we change documentation only, we don't need to run tests
 
@@ -41,9 +41,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # expose teh slug/short values github variables inside the workflow
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v3.x
+      # # expose teh slug/short values github variables inside the workflow
+      # - name: Inject slug/short variables
+      #   uses: rlespinasse/github-slug-action@v3.x
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -82,10 +82,10 @@ jobs:
       - name: Check Repo already exists
         id: check-repo
         run: databricks repos get --path /Repos/MLOps_Staging/MLOps_notebooks
-        continue-on-error: true
+        continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
       - name: Create Repos
-        if: steps.check-repo.outcome == 'failure'
+        if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
         env:
           repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: |
@@ -94,6 +94,18 @@ jobs:
 
       - name: Update Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
+
+      # run test in staging env
+      - uses: ./.github/databricks-actions/run-notebook
+        id: run-test
+        with: 
+          notebook-path: "/Repos/MLOps_Staging/MLOps_notebooks/05_ops_validation"
+          host: ${env.DATABRICKS_HOST}
+          token: ${env.DATABRICKS_TOKEN}
+
+      # # run test in staging env
+      # - name: Run test # call notebook action run
+      #   run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
 
       # - name: Deploy the code and launch integration tests
       #   run: |
