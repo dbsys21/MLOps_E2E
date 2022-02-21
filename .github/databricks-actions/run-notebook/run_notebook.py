@@ -9,7 +9,7 @@ from databricks_cli.runs.api import RunsApi
 @click.option('--notebook-path', required=True)
 @click.option('--runtime-version', default="10.3.x-cpu-ml-scala2.12")
 @click.option('--node-type', default="Standard_L4s")
-@click.option('--num-workers', default=3)
+@click.option('--num-workers', default="3")
 @click.option('--host', required=True)
 @click.option('--token', required=True)
 def run_notebook(notebook_path, runtime_version, node_type, num_workers, host, token):
