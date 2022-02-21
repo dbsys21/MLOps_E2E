@@ -100,8 +100,8 @@ jobs:
         id: run-test
         with: 
           notebook-path: "/Repos/MLOps_Staging/MLOps_notebooks/05_ops_validation"
-          host: ${env.DATABRICKS_HOST}
-          token: ${env.DATABRICKS_TOKEN}
+          host: ${{ env.DATABRICKS_HOST }}
+          token: ${{ env.DATABRICKS_TOKEN }}
 
       # # run test in staging env
       # - name: Run test # call notebook action run
