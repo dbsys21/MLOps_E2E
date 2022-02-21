@@ -90,15 +90,16 @@ jobs:
           #repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY}}.git'
         run: |
           echo 'env.repo_url is ${{env.repo_url}}'
-          databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_notebooks 
+          databricks repos create --url=${{env.repo_url}} --provider=gitHub --path=/Repos/MLOps_Staging/MLOps_E2E 
 
       - name: Update Repos
-        run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
+        run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_E2E --branch=${{ env.GITHUB_REF_SLUG }}
 
       # run test in staging env
       - uses: ./.github/databricks-actions/run-notebook
         id: run-test
         with: 
+          MLOps_notebooks/05_ops_validation
           notebook-path: "/Repos/MLOps_Staging/MLOps_notebooks/05_ops_validation"
           host: ${{ env.DATABRICKS_HOST }}
           token: ${{ env.DATABRICKS_TOKEN }}
