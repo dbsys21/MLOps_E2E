@@ -73,12 +73,12 @@ jobs:
           env
 
       - name: Check if staging Repo already exists
-        id: check-repo
+        id: check-repo-stg
         run: databricks repos get --path /Repos/MLOps_Staging/MLOps_E2E
         continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
       - name: Create staging Repos
-        if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
+        if: steps.check-repo-stg.outcome == 'failure' # create repo if repo does not exist
         env:
           repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: |
@@ -101,12 +101,12 @@ jobs:
   
      # the following steps deploy the repo to prodution
       - name: Check if production Repo already exists
-        id: check-repo
+        id: check-repo-prod
         run: databricks repos get --path /Repos/MLOps_Production/MLOps_E2E
         continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
       - name: Create production Repos
-        if: steps.check-repo.outcome == 'failure' # create repo if repo does not exist
+        if: steps.check-repo-prod.outcome == 'failure' # create repo if repo does not exist
         env:
           repo_url: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: |
