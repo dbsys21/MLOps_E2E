@@ -33,8 +33,8 @@ jobs:
         python-version: [3.8]
 
     env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STG }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_STG }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_DEV }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_DEV }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -76,8 +76,8 @@ jobs:
         env:
           repo_url1: 'https://github.com/${{ env.GITHUB_REPOSITORY_OWNER_PART}}/${{ env.GITHUB_REPOSITORY_NAME_PART}}.git'
         run: 
-          echo 'env.repo_url1 is ${{env.repo_url1}}'
-          echo $repo_url1
+          echo env
+          echo github
 
       - name: Check Repo already exists
         id: check-repo
@@ -95,13 +95,13 @@ jobs:
       - name: Update Repos
         run: databricks repos update --path=/Repos/MLOps_Staging/MLOps_notebooks --branch=${{ env.GITHUB_REF_SLUG }}
 
-      # run test in staging env
-      - uses: ./.github/databricks-actions/run-notebook
-        id: run-test
-        with: 
-          notebook-path: "/Repos/MLOps_Staging/MLOps_notebooks/05_ops_validation"
-          host: ${env.DATABRICKS_HOST}
-          token: ${env.DATABRICKS_TOKEN}
+      # # run test in staging env
+      # - uses: ./.github/databricks-actions/run-notebook
+      #   id: run-test
+      #   with: 
+      #     notebook-path: "/Repos/MLOps_Staging/MLOps_notebooks/05_ops_validation"
+      #     host: ${env.DATABRICKS_HOST}
+      #     token: ${env.DATABRICKS_TOKEN}
 
       # # run test in staging env
       # - name: Run test # call notebook action run
