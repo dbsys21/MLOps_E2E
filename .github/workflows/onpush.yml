@@ -80,7 +80,7 @@ jobs:
 
       - name: Check Repo already exists
         id: check-repo
-        run: databricks repos get --path /Repos/MLOps_Staging/MLOps_notebooks
+        run: databricks repos get --path /Repos/MLOps_Staging/MLOps_E2E
         continue-on-error: true # the above command will error out if repo does not exist, continue if that's the case
 
       - name: Create Repos
