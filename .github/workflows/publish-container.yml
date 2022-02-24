@@ -1,0 +1,44 @@
+name: Build and Publish Container - example
+
+on:
+  push:
+    branches: [ feature ]
+
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    # - name: Authenticate to Azure
+    #   uses: azure/login@v1
+    #   with:
+    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # - name: set auto-install of extensions
+    #   run: az config set extension.use_dynamic_install=yes_without_prompt
+
+    # - name: attach workspace
+    #   run: az ml folder attach -w "ml-ws" -g "practical-mlops"
+
+    # - name: retrieve the model
+    #   run: az ml model download -v --target-dir "." --model-id "roberta-sequence:1"
+
+    - name: Loging to Github registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GH_REGISTRY }}
+
+    - name: build flask app
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        #tags: alfredodeza/flask-roberta:latest
+        tags: ghcr.io/dbsys21/churn_demo:latest
+        push: true
