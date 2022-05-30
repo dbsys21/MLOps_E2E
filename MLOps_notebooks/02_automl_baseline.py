@@ -31,7 +31,7 @@
 import mlflow
 
 # Use MLflow to track experiments
-mlflow.set_experiment(f"/Users/{current_user_name}/churn_demo")
+mlflow.set_experiment(f"/Shared/churn_demo")
 
 target_col = "churn"
 
@@ -243,3 +243,7 @@ model_version
 # MAGIC model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
 # MAGIC model.predict(input_X)
 # MAGIC ```
+
+# COMMAND ----------
+
+

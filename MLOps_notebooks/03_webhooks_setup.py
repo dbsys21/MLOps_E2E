@@ -87,7 +87,7 @@ host = "https://" + dbutils.notebook.entry_point.getDbutils().notebook().getCont
 token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get()
 
 # change it! Create a job based on 05_ops_validation notebook
-job_id = "1471546"
+job_id = "102449080967672"
 
 # "events": ["TRANSITION_REQUEST_CREATED"],
 
@@ -251,7 +251,7 @@ mlflow_call_endpoint("registry-webhooks/list", method = "GET", body = list_model
 # Remove a webhook
 mlflow_call_endpoint("registry-webhooks/delete",
                      method="DELETE",
-                     body = json.dumps({'id': 'a137468e42624fad867200196f5b7ca1'}))
+                     body = json.dumps({'id': '889f4bd3ee234e33973bb169db6c3f37'}))
 
 # COMMAND ----------
 

@@ -66,3 +66,7 @@ def cleanup_data():
   dbutils.fs.rm(bronze_tbl_path, True)
   dbutils.fs.rm(silver_tbl_path, True)
   dbutils.fs.rm(telco_preds_path, True)
+
+# COMMAND ----------
+
+

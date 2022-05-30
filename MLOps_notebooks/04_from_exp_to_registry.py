@@ -67,7 +67,7 @@ from mlflow.tracking.client import MlflowClient
 
 # update the model with a new version
 client = MlflowClient()
-model_details = client.get_model_version(name=churn_model_name, version=2)
+model_details = client.get_model_version(name=churn_model_name, version=1)
 
 client.update_registered_model(
   name=model_details.name,
@@ -111,10 +111,6 @@ def mlflow_call_endpoint(endpoint, method, body='{}'):
 
 # COMMAND ----------
 
-staging_request
-
-# COMMAND ----------
-
 # Transition request to staging
 staging_request = {'name': model_details.name,
                    'version': model_details.version,
@@ -122,6 +118,10 @@ staging_request = {'name': model_details.name,
                    'archive_existing_versions': 'true'}
 
 mlflow_call_endpoint('transition-requests/create', 'POST', json.dumps(staging_request))
+
+# COMMAND ----------
+
+staging_request
 
 # COMMAND ----------
 

@@ -36,7 +36,7 @@ from pyspark.sql.types import StructType,StructField,DoubleType, StringType, Int
 
 # Move file from driver to DBFS
 driver_to_dbfs_path = f'dbfs:{get_default_path()}/Telco-Customer-Churn.csv'
-dbutils.fs.cp('file:/databricks/driver/Telco-Customer-Churn.csv', driver_to_dbfs_path)
+#dbutils.fs.cp('file:/databricks/driver/Telco-Customer-Churn.csv', driver_to_dbfs_path)
 
 # COMMAND ----------
 
