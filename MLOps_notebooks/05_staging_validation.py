@@ -245,21 +245,38 @@ def mlflow_call_endpoint(endpoint, method, body='{}'):
 
 # If any checks failed, reject and move to Archived
 if '0' in results or 'fail' in results: 
-  reject_request_body = {'name': model_details.name, 
+    reject_request_body = {'name': model_details.name, 
                          'version': model_details.version, 
                          'stage': 'Staging', 
                          'comment': 'Tests failed - check the tags or the job run to see what happened.'}
   
-  mlflow_call_endpoint('transition-requests/reject', 'POST', json.dumps(reject_request_body))
-  
+    mlflow_call_endpoint('transition-requests/reject', 'POST', json.dumps(reject_request_body))
 else: 
-  approve_request_body = {'name': model_details.name,
+    
+    # approve transition to staging
+    approve_request_body = {'name': model_details.name,
                           'version': model_details.version,
                           'stage': 'Staging',
                           'archive_existing_versions': 'true',
                           'comment': 'All tests passed!  Moving to staging.'}
   
-  mlflow_call_endpoint('transition-requests/approve', 'POST', json.dumps(approve_request_body))
+    mlflow_call_endpoint('transition-requests/approve', 'POST', json.dumps(approve_request_body))
+
+    # transition model to staging
+    transition_request_body = {'name': model_details.name,
+                          'version': model_details.version,
+                          'stage': 'Staging',
+                          'archive_existing_versions': 'true',}
+    
+    mlflow_call_endpoint('transition-stage', 'POST', json.dumps(transition_request_body))
+    
+    # create request to transition model to production
+    production_request = {'name': model_details.name,
+                   'version': model_details.version,
+                   'stage': 'Production',
+                   'archive_existing_versions': 'true'}
+
+    mlflow_call_endpoint('transition-requests/create', 'POST', json.dumps(production_request))  
 
 # COMMAND ----------
 
