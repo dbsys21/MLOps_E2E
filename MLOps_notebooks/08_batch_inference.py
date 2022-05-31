@@ -19,7 +19,7 @@
 
 import mlflow
 
-model = mlflow.pyfunc.spark_udf(spark, model_uri=f"models:/{churn_model_name}/staging") # may need to replace with your own model name
+model = mlflow.pyfunc.spark_udf(spark, model_uri=f"models:/{churn_model_name}/production") # may need to replace with your own model name
 
 # COMMAND ----------
 
