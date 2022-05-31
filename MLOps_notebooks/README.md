@@ -12,3 +12,16 @@ Repository structure
 |- 08_staging_batch_inference.py
 Shared_Include.py
 ```
+
+# 03_webhooks_setup.py 
+1. Create two workflows using the Jobs UI and the `05_staging_validation.py` and `06_production_validation.py` files. These notebooks include testing code that will run automatically when a transition request is made to move a model in Mlflow Model Registry from `None` to `Staging` 
+![create-workflow](images/create-workflow.png)
+
+2. Copy the Job ID of these two workflows
+![job-id](images/job-id.jpg)
+
+3. Input the Job IDs into the widgets at the top of the `03-webhooks_setup.py` file
+![widgets](images/webhooks-widgets.png)
+
+4. Click Run All at the top of the notebook.   
+The `03_webhooks_setup.py` will setup two Jobs Webhooks that will trigger the workflows `05_staging_validation.py` and `06_production_validation.py` that we setup earlier. We can also setup Slack notifications although this is not done in the current notebook. 
