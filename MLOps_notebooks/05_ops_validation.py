@@ -47,8 +47,8 @@ run_info = client.get_run(run_id=model_details.run_id)
 # COMMAND ----------
 
 # Read from feature store prod table?
-data_source = run_info.data.tags['db_table']
-features = fs.read_table(data_source)
+# data_source = run_info.data.tags['db_table']
+features = fs.read_table(name='cici_xue_churn_demo.churn_features')
 
 # Load model as a Spark UDF
 model_uri = f'models:/{model_name}/{version}'
