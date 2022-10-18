@@ -6,13 +6,13 @@ name: MLOps Github Actions
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, cici/test ]
     tags-ignore: # if we only adding tags, we don't need to run tests
       - '*.*'
     paths-ignore:
       - 'README.md' # if we change documentation only, we don't need to run tests
   pull_request:
-    branches: [ main ]
+    branches: [ main, cici/test ]
     tags-ignore:
       - '*.*' # if we only adding tags, we don't need to run tests
     paths-ignore:
