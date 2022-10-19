@@ -24,16 +24,16 @@ def run_notebook(notebook_path, runtime_version, node_type, num_workers, host, t
         #     "max_workers": 6
         # }
         # the aws_attributes are only applicable for databricks on AWS
-        "aws_attributes": {
-        "first_on_demand": 1,
-        "availability": "SPOT_WITH_FALLBACK",
-        "zone_id": "auto",
-        "instance_profile_arn": null,
-        "spot_bid_price_percent": 100,
-        "ebs_volume_type": "GENERAL_PURPOSE_SSD",
-        "ebs_volume_count": 3,
-        "ebs_volume_size": 100
-        },
+#         "aws_attributes": {
+#         "first_on_demand": 1,
+#         "availability": "SPOT_WITH_FALLBACK",
+#         "zone_id": "auto",
+#         "instance_profile_arn": null,
+#         "spot_bid_price_percent": 100,
+#         "ebs_volume_type": "GENERAL_PURPOSE_SSD",
+#         "ebs_volume_count": 3,
+#         "ebs_volume_size": 100
+#         },
     }
     run_conf = {
         'new_cluster': cluster_conf,

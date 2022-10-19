@@ -33,8 +33,8 @@ jobs:
         python-version: [3.8]
 
     env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STG }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN_STG }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -97,7 +97,9 @@ jobs:
           token: ${{ env.DATABRICKS_TOKEN }}
           num-workers: 3
           runtime-version: "10.3.x-cpu-ml-scala2.12"
-          node-type: "i3.xlarge"
+          node-type: "Standard_L4s" # for Azure only
+          #node-type: "i3.xlarge" # for AWS only
+       
   
      # the following steps deploy the repo to prodution
       - name: Check if production Repo already exists
