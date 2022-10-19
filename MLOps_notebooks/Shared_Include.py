@@ -33,8 +33,13 @@ automl_tbl_name = 'gold_customers'
 telco_preds_tbl_name = 'telco_preds'
 churn_model_name = f'{current_user_name_prefix}_churn_demo'
 
+print(f'curent user name: {current_user_name}')
 print(f'Default database: {get_default_database()}')
 print(f'Files are stored in {get_default_path()}')
+
+# COMMAND ----------
+
+current_user_name
 
 # COMMAND ----------
 

@@ -24,17 +24,9 @@ display(telcoDF)
 
 # COMMAND ----------
 
-database_name
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC Using `koalas` to scale my teammates' `pandas` code.
-
-# COMMAND ----------
-
 from databricks.feature_store import feature_table
-import databricks.koalas as ks
+#import databricks.koalas as ks
+import pyspark.pandas as ks
 
 def compute_churn_features(data):
   

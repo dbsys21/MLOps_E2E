@@ -87,7 +87,7 @@ host = "https://" + dbutils.notebook.entry_point.getDbutils().notebook().getCont
 token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get()
 
 # change it! Create a job based on 05_ops_validation notebook
-job_id = "1471546"
+job_id = "74265719576344"
 
 # "events": ["TRANSITION_REQUEST_CREATED"],
 
@@ -104,10 +104,6 @@ trigger_job = json.dumps({
 })
 
 mlflow_call_endpoint("registry-webhooks/create", method = "POST", body = trigger_job)
-
-# COMMAND ----------
-
-job_id
 
 # COMMAND ----------
 

@@ -67,7 +67,7 @@ from mlflow.tracking.client import MlflowClient
 
 # update the model with a new version
 client = MlflowClient()
-model_details = client.get_model_version(name=churn_model_name, version=2)
+model_details = client.get_model_version(name=churn_model_name, version=1)
 
 client.update_registered_model(
   name=model_details.name,
@@ -108,10 +108,6 @@ def mlflow_call_endpoint(endpoint, method, body='{}'):
       response = http_request(
           host_creds=host_creds, endpoint="/api/2.0/mlflow/{}".format(endpoint), method=method, json=json.loads(body))
   return response.json()
-
-# COMMAND ----------
-
-staging_request
 
 # COMMAND ----------
 

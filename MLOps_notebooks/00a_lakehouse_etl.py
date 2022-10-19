@@ -15,6 +15,13 @@
 
 # COMMAND ----------
 
+# MAGIC %fs
+# MAGIC 
+# MAGIC 
+# MAGIC ls /Filestore/tmp
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Load into Delta Lake
 
@@ -34,13 +41,10 @@ from pyspark.sql.types import StructType,StructField,DoubleType, StringType, Int
 
 # add a test
 
-# Move file from driver to DBFS
-driver_to_dbfs_path = f'dbfs:{get_default_path()}/Telco-Customer-Churn.csv'
-dbutils.fs.cp('file:/databricks/driver/Telco-Customer-Churn.csv', driver_to_dbfs_path)
-
-# COMMAND ----------
-
-driver_to_dbfs_path
+# Move file from source location to DBFS
+target_dbfs_path = f'dbfs:{get_default_path()}/Telco-Customer-Churn.csv'
+source_file_path = f'file:/Workspace/Repos/{current_user_name}/MLOps_E2E/MLOps_notebooks/Telco-Customer-Churn.csv'
+dbutils.fs.cp(source_file_path, target_dbfs_path)
 
 # COMMAND ----------
 
@@ -76,7 +80,7 @@ schema = StructType([
 
 # Read CSV, write to Delta and take a look
 bronze_df = spark.read.format('csv').schema(schema).option('header','true')\
-               .load(driver_to_dbfs_path)
+               .load(target_dbfs_path)
 
 bronze_df.write.format('delta').mode('overwrite').save(bronze_tbl_path)
 
@@ -91,7 +95,7 @@ display(bronze_df)
 
 # Create bronze table
 _ = spark.sql(f'''
-  CREATE TABLE `{database_name}`.{bronze_tbl_name}
+  CREATE TABLE IF NOT EXISTS `{database_name}`.{bronze_tbl_name}
   USING DELTA 
   LOCATION '{bronze_tbl_path}'
   ''')
