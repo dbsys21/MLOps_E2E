@@ -15,13 +15,6 @@
 
 # COMMAND ----------
 
-# MAGIC %fs
-# MAGIC 
-# MAGIC 
-# MAGIC ls /Filestore/tmp
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ### Load into Delta Lake
 

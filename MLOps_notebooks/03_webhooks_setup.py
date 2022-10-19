@@ -87,7 +87,7 @@ host = "https://" + dbutils.notebook.entry_point.getDbutils().notebook().getCont
 token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get()
 
 # change it! Create a job based on 05_ops_validation notebook
-job_id = "74265719576344"
+job_id = "654069518206049"
 
 # "events": ["TRANSITION_REQUEST_CREATED"],
 

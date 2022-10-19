@@ -13,7 +13,7 @@ def get_default_path():
   return f'/tmp/{current_user_name_prefix}/ibm-telco-churn'
 
 def get_default_database():
-  return f'{current_user_name_prefix}_churn_demo'
+  return f'{current_user_name_prefix}_churn_demo_v1'
 
 spark.sql(f'create database if not exists {get_default_database()}')
 spark.sql(f'use {get_default_database()}')
