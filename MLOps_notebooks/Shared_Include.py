@@ -36,10 +36,7 @@ churn_model_name = f'{current_user_name_prefix}_churn_demo'
 print(f'curent user name: {current_user_name}')
 print(f'Default database: {get_default_database()}')
 print(f'Files are stored in {get_default_path()}')
-
-# COMMAND ----------
-
-current_user_name
+print(f'Model name: {churn_model_name}')
 
 # COMMAND ----------
 

@@ -223,7 +223,7 @@ registered_model_version = mlflow.register_model(model_uri, churn_model_name)
 
 # COMMAND ----------
 
-model_name = "leo_mao_churn_demo"
+model_name = churn_model_name
 model_version = registered_model_version.version
 
 model_version
